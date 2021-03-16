@@ -1,4 +1,4 @@
-AWSTemplateFormatVersion: 2010-09-09
+AWSTemplateFormatVersion: "2010-09-09"
 
 Parameters:
   PublicKeyName:
@@ -158,23 +158,5 @@ Resources:
       SnapshotId: !Ref SnapshotId
       VolumeType: gp3
 
-resource "aws_instance" "main-{{ name }}" {
-  ami           = var.image
-  instance_type = var.machine_type
-  key_name      = "{{ name }}"
-  count         = var.node_count
-
-  subnet_id              = aws_subnet.main-{{ name }}.id
-  vpc_security_group_ids = [aws_security_group.main-{{ name }}.id]
-
-  root_block_device {
-    volume_size = 400
-  }
-
-  tags = {
-    Name = "{{name}}-${count.index}"
-  }
-}
-
-
 Outputs:
+  PublicIp: !GetAtt Instance.PublicIp
