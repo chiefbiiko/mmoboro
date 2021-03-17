@@ -46,7 +46,7 @@ Parameters:
   InstanceImage:
     Description: Amazon machine image for the EC2 instance
     Type: String
-    Default: ami-0e6273fe5a9a1ad93
+    Default: ami-0fa37863afb290840
 
 Resources:
   VPC:
