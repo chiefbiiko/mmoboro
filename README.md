@@ -13,3 +13,8 @@
   + cron job that updates one ebs snapshot of the chain data volume every hour ?
 + review ingress
 + choose a better instance type & ami
+
+## readables
+
++ [telemetry](https://docs.moonbeam.network/node-operators/networks/telemetry/)
+

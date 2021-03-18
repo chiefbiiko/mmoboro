@@ -240,8 +240,6 @@ Resources:
             > /etc/systemd/system/moonbeam.service
             /usr/bin/sudo systemctl enable moonbeam.service
             /usr/bin/sudo systemctl start moonbeam.service
-            /usr/bin/sudo systemctl status moonbeam.service
-            /usr/bin/sudo journalctl -f -u moonbeam.service
       LaunchTemplateName: !Sub ${AWS::StackName}-launch-template
 
 Outputs:
