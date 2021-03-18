@@ -18,7 +18,10 @@ aws cloudformation create-change-set \
   --stack-name $STACK_NAME \
   --change-set-name $CHANGE_SET_NAME \
   --change-set-type $change_set_type \
-  --template-body file://stack.yml
+  --template-body file://stack.yml \
+  --parameters \
+    ParameterKey=MoonbeamGantreeAPIKey,ParameterValue=$MOONBEAM_GANTREE_API_KEY \
+    ParameterKey=MoonbeamProtocolClientKey,ParameterValue=$MOONBEAM_PROTOCOL_CLIENT_KEY \
 
 change_set="$( \
   aws cloudformation describe-change-set \
