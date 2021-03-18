@@ -42,7 +42,9 @@ Parameters:
     Description: EC2 instance name
     Type: String
     Default: node
-
+  
+  # default
+  # 099720109477/ubuntu/images/hvm-ssd/ubuntu-focal-20.04-amd64-server-20210315
   InstanceImage:
     Description: Amazon machine image for the EC2 instance
     Type: String
@@ -149,7 +151,7 @@ Resources:
       AvailabilityZone: !Sub ${AWS::Region}a
       SubnetId: !Ref Subnet
       Volumes:
-        - Device: /dev/sdh # CORRECT?
+        - Device: /dev/xvdh # from: ssh into the instance & lsblk
           VolumeId: !Ref Volume
       LaunchTemplate:
         LaunchTemplateId: !Ref LaunchTemplate
@@ -175,9 +177,28 @@ Resources:
           - !Ref SecurityGroup
         UserData: !Base64
           "Fn::Sub": |
-            echo moon
-            echo beam
-            echo ${AWS::StackName} > $HOME/${AWS::StackName}.txt
+            Content-Type: multipart/mixed; boundary="//"
+            MIME-Version: 1.0
+
+            --//
+            Content-Type: text/cloud-config; charset="us-ascii"
+            MIME-Version: 1.0
+            Content-Transfer-Encoding: 7bit
+            Content-Disposition: attachment; filename="cloud-config.txt"
+
+            #cloud-config
+            cloud_final_modules:
+            - [scripts-user, always]
+
+            --//
+            Content-Type: text/x-shellscript; charset="us-ascii"
+            MIME-Version: 1.0
+            Content-Transfer-Encoding: 7bit
+            Content-Disposition: attachment; filename="userdata.txt"
+
+            #!/bin/bash
+            /bin/echo "Hello World" >> /tmp/testfile.txt
+            --//
       LaunchTemplateName: !Sub ${AWS::StackName}-launch-template
 
 Outputs:

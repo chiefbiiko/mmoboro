@@ -7,8 +7,9 @@
 + user data startup script
 + autoscalin 3az-single-node-setup with two hibernate backups and 1 live node
   + revive from one shared ebs snapshot
+  + elastic ip
 + audit & tune with regard to high availability
-  + RTO & RPO must be 1 minute
-  + cron job that updates one ebs snapshot of the chain data volume every minute
+  + RTO 3s & RPO 1h ?
+  + cron job that updates one ebs snapshot of the chain data volume every hour ?
 + review ingress
 + choose a better instance type & ami
