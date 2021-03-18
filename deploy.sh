@@ -1,7 +1,7 @@
 #!/bin/sh
 
 stack_exists() { # $stack_name
-  &>/dev/null aws cloudformation describe-stacks --stack-name $1
+  aws cloudformation describe-stacks --stack-name $1 >/dev/null 2>&1
 }
 
 stack_name=zyzx
