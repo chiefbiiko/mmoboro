@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 stack_exists() { # $stack_name
   aws cloudformation describe-stacks --stack-name $1 >/dev/null 2>&1
@@ -29,13 +29,10 @@ change_set="$( \
 
 echo "$change_set"
 
-echo -n "execute change set? (y/n) "
-read answer
+read -n 1 -p "execute change set? (y/n) " answer
+echo
 
-if [ "$answer" == "${answer#[Yy]}" ]; then
-    echo "you said no"
-    exit 0 # above actually means no :D
-fi
+if [[ "${answer,,}" == "n" ]]; then exit 0; fi
 
 instance="$( \
   jq -r '.Changes[] | select(.ResourceChange.LogicalResourceId == "Instance")' <<< "$change_set" \
@@ -43,7 +40,7 @@ instance="$( \
 
 instance_replacement="$(jq -r '.ResourceChange.Replacement' <<< "$instance")"
 
-if [ "$instance_replacement" = True ]; then
+if [[ "$instance_replacement" == "True" ]]; then
   echo "detachin volume"
 
   stack="$( \
