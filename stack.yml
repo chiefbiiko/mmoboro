@@ -5,11 +5,15 @@ Parameters:
   #   Description: EBS snapshot id on which to base the volume
   #   Type: String
 
-  GantreeAPIKey:
+  MoonbeamGantreeAPIKey:
     Description: API key for Grantree
     Type: String
 
-  # default
+  MoonbeamProtocolClientKey:
+    Description: Protocol client key handed out by the Moonbeam team
+    Type: String
+
+  # 4now default
   # 099720109477/ubuntu/images/hvm-ssd/ubuntu-focal-20.04-amd64-server-20210315
   InstanceImage:
     Description: Amazon machine image for the EC2 instance
@@ -186,7 +190,6 @@ Resources:
         KeyName: !Ref SSHPublicKeyName
         SecurityGroupIds:
           - !Ref SecurityGroup
-        # NOTE: runs a single time at boot - not every restart
         UserData: !Base64
           "Fn::Sub": |
             #!/bin/bash
@@ -240,18 +243,18 @@ Resources:
             " \
             > /etc/systemd/system/moonbeam.service
 
-            /usr/bin/sudo systemctl enable moonbeam.service
-            /usr/bin/sudo systemctl start moonbeam.service
+            /usr/bin/sudo /bin/systemctl enable moonbeam.service
+            /usr/bin/sudo /bin/systemctl start moonbeam.service
 
             /bin/mkdir -p /var/lib/gantree/relay
             /bin/mkdir -p /var/lib/gantree/parachain
-            
+
             /usr/bin/echo -e "
             {
-              "api_key": "TODO",
+              "api_key": "${MoonbeamGantreeAPIKey}",
               "project_id": "moonbase-alpha",
               "client_id": "${AWS::StackName}-relay",
-              "pckrc": "TODO",
+              "pckrc": "${MoonbeamProtocolClientKey}",
               "metrics_host": "http://127.0.0.1:9615"
             }
             " \
@@ -259,10 +262,10 @@ Resources:
 
             /usr/bin/echo -e "
             {
-              "api_key": "TODO",
+              "api_key": "${MoonbeamGantreeAPIKey}",
               "project_id": "moonbase-alpha",
               "client_id": "${AWS::StackName}-parachain",
-              "pckrc": "TODO",
+              "pckrc": "${MoonbeamProtocolClientKey}",
               "metrics_host": "http://127.0.0.1:9616"
             }
             " \
