@@ -6,11 +6,9 @@ Parameters:
   #   Type: String
 
   PublicKeyName:
-    Description: |
-      EC2 SSH public key name
-      must have been pushed to ec2 with 'aws ec2 import-key-pair'
+    Description: EC2 SSH public key name that is available within EC2
     Type: String
-    Default: id_rsa_zyzx_1615910462.pub
+    Default: !Sub id_rsa_${AWS::StackName}.pub
 
   Environment:
     Description: Application environment
