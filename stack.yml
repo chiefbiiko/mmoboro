@@ -23,7 +23,7 @@ Parameters:
   SSHPublicKeyName:
     Description: EC2 SSH public key name that is available within EC2
     Type: String
-    Default: id_rsa_zyzx.pub
+    Default: id_rsa_mmoboro.pub
 
   EC2Username:
     Description: EC2 username
