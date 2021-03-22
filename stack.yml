@@ -180,7 +180,9 @@ Resources:
     Type: AWS::EC2::Volume
     Properties:
       AvailabilityZone: !Sub ${AWS::Region}a
-      Encrypted: true
+      Encrypted: false
+      Iops: 3000
+      MultiAttachEnabled: false
       Size: !Ref VolumeSizeGiB
       # SnapshotId: !Ref SnapshotId
       VolumeType: gp3
@@ -202,17 +204,11 @@ Resources:
 
             /usr/bin/sudo /bin/mkdir /data
 
-            uuid="$( \
-              /usr/bin/sudo /usr/sbin/blkid \
-              | /bin/grep xvdh \
-              | /bin/grep -oE '[a-f0-9]+-[a-f0-9]+-[a-f0-9]+-[a-f0-9]+-[a-f0-9]+' \
-            )"
+            /usr/bin/echo -e \
+              "/dev/xvdh  /data  ext4  defaults,nofail,nobootwait  0  2" \
+            >> /etc/fstab
 
-            /usr/bin/echo -e "
-              UUID=$uuid  /data  ext4  defaults,nofail,nobootwait  0  2
-            " >> /etc/fstab
-
-            /usr/bin/sudo /bin/mount -a
+            /usr/bin/sudo /bin/mount /dev/xvdh /data
 
             /bin/mkdir -p ${VolumeDataDir}
 
@@ -350,13 +346,9 @@ Resources:
 
             /usr/bin/sudo /bin/systemctl start gantree-relay
 
-            /bin/journalctl -f -u gantree-relay
-
             /usr/bin/sudo /bin/systemctl enable gantree-parachain
 
             /usr/bin/sudo /bin/systemctl start gantree-parachain
-
-            /bin/journalctl -f -u gantree-parachain
 
 Outputs:
   PublicIp:
