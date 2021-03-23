@@ -248,6 +248,8 @@ Resources:
               KillSignal=SIGHUP
               ExecStart=/home/${EC2Username}/bin/moonbeam \
                 --parachain-id 1000 \
+                --collator \
+                --author-id ${MoonbeamCollatorPublicAddress} \
                 --port 30333 \
                 --rpc-port 9933 \
                 --ws-port 9944 \
@@ -257,22 +259,18 @@ Resources:
                 --log info \
                 --base-path ${VolumeDataDir} \
                 --chain alphanet \
-                --name ${AWS::StackName} \
+                --name "${AWS::StackName}🐝🐝🌒" \
                 -- \
                 --port 30334 \
                 --rpc-port 9934 \
                 --ws-port 9945 \
                 --pruning=archive \
-                --name="${AWS::StackName}-embedded-relayer"
+                --name "${AWS::StackName}🐝🐝🌒-embedded-relayer"
 
               [Install]
               WantedBy=multi-user.target
             " \
             > /etc/systemd/system/moonbeam.service
-
-            /usr/bin/sudo /bin/systemctl enable moonbeam.service
-
-            /usr/bin/sudo /bin/systemctl start moonbeam.service
 
             cd /home/${EC2Username}/bin
 
@@ -293,7 +291,7 @@ Resources:
               "api_key": "${MoonbeamGantreeAPIKey}",
               "project_id": "moonbase-alpha",
               "client_id": "${AWS::StackName}-relay",
-              "pckrc": "",
+              "pckrc": "${MoonbeamProtocolClientKey}",
               "metrics_host": "http://127.0.0.1:9615"
             }
             " \
@@ -304,7 +302,7 @@ Resources:
               "api_key": "${MoonbeamGantreeAPIKey}",
               "project_id": "moonbase-alpha",
               "client_id": "${AWS::StackName}-parachain",
-              "pckrc": "",
+              "pckrc": "${MoonbeamProtocolClientKey}",
               "metrics_host": "http://127.0.0.1:9616"
             }
             " \
@@ -341,6 +339,10 @@ Resources:
             WantedBy=multi-user.target
             " \
             > /etc/systemd/system/gantree-parachain.service
+
+            /usr/bin/sudo /bin/systemctl enable moonbeam.service
+
+            /usr/bin/sudo /bin/systemctl start moonbeam.service
 
             /usr/bin/sudo /bin/systemctl enable gantree-relay
 

@@ -21,7 +21,7 @@ aws cloudformation create-change-set \
   --template-body file://stack.yml \
   --parameters \
     ParameterKey=MoonbeamGantreeAPIKey,ParameterValue=$MOONBEAM_GANTREE_API_KEY \
-    ParameterKey=MoonbeamProtocolClientKey,ParameterValue=$MOONBEAM_PROTOCOL_CLIENT_KEY \
+    ParameterKey=MoonbeamProtocolClientKey,ParameterValue=$MOONBEAM_PROTOCOL_CLIENT_KEY
 
 change_set="$( \
   aws cloudformation describe-change-set \
