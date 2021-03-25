@@ -8,3 +8,14 @@ https://docs.moonbeam.network/node-operators/networks/collator/
 https://docs.moonbeam.network/getting-started/testnet/faucet/
 https://telemetry.polkadot.io/#list/Moonbase%20Alpha
 https://docs.moonbeam.network/staking/stake/
+
+**2 collate**
+
+```sh
+...
+ExecStart=/home/${EC2Username}/bin/moonbeam \
+    --parachain-id 1000 \
+    --collator \
+    --author-id ${MoonbeamCollatorPublicAddress} \
+    ...
+```

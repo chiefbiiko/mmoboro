@@ -248,8 +248,6 @@ Resources:
               KillSignal=SIGHUP
               ExecStart=/home/${EC2Username}/bin/moonbeam \
                 --parachain-id 1000 \
-                --collator \
-                --author-id ${MoonbeamCollatorPublicAddress} \
                 --port 30333 \
                 --rpc-port 9933 \
                 --ws-port 9944 \
